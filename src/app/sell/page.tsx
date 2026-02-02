@@ -50,7 +50,7 @@ export default function SellCard() {
     try {
       if (!user) throw new Error('You must be logged in to sell cards');
 
-      const { error } = await supabase.from('cards').insert([
+      const { error } = await supabase.schema('catalog').from('cards').insert([
         {
           ...formData,
           price: parseFloat(formData.price),

@@ -27,6 +27,7 @@ export default function Profile() {
     try {
       setLoading(true);
       const { data, error } = await supabase
+        .schema('catalog')
         .from('cards')
         .select('*')
         .eq('seller_id', userId)

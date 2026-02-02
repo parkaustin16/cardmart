@@ -15,6 +15,7 @@ export default function Marketplace() {
     try {
       setLoading(true);
       let query = supabase
+        .schema('catalog')
         .from('cards')
         .select('*')
         .order('created_at', { ascending: false });

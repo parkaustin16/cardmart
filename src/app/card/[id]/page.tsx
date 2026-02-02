@@ -28,6 +28,7 @@ export default function CardDetail() {
     try {
       setLoading(true);
       const { data, error } = await supabase
+        .schema('catalog')
         .from('cards')
         .select('*')
         .eq('id', id)
@@ -48,7 +49,11 @@ export default function CardDetail() {
     if (!confirm('Are you sure you want to delete this listing?')) return;
 
     try {
-      const { error } = await supabase.from('cards').delete().eq('id', card.id);
+      const { error } = await supabase
+        .schema('catalog')
+        .from('cards')
+        .delete()
+        .eq('id', card.id);
 
       if (error) throw error;
       router.push('/marketplace');
