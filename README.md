@@ -49,26 +49,11 @@ npm install
 
 #### Set up the Database
 
-1. In your Supabase project dashboard, go to the SQL Editor
-2. Copy the contents of `supabase/schema.sql`
-3. Paste and run the SQL script in the SQL Editor
-
-This will create:
-- `cards` table for storing trading card listings
-- `profiles` table for user profiles (optional extension)
-- Necessary indexes for performance
-- Row Level Security (RLS) policies
-- Automatic timestamp triggers
+Create the tables you need in your Supabase project (via the Table Editor or SQL Editor) and ensure Row Level Security (RLS) policies match your intended access patterns.
 
 #### Configure Environment Variables
 
-1. Copy `.env.example` to `.env.local`:
-
-```bash
-cp .env.example .env.local
-```
-
-2. Update `.env.local` with your Supabase credentials:
+Create a `.env.local` file (not committed) with your Supabase credentials:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
@@ -104,7 +89,6 @@ cardmart/
 │   └── lib/                 # Utility functions
 │       └── supabase.ts      # Supabase client & types
 ├── supabase/
-│   └── schema.sql           # Database schema
 └── public/                  # Static assets
 ```
 

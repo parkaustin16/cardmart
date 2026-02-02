@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase, Card } from '@/lib/supabase';
+import { getSupabaseClient, Card } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
@@ -15,6 +15,7 @@ export default function CardDetail() {
   const router = useRouter();
 
   useEffect(() => {
+    const supabase = getSupabaseClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
     });
@@ -27,6 +28,7 @@ export default function CardDetail() {
   const fetchCard = async (id: string) => {
     try {
       setLoading(true);
+      const supabase = getSupabaseClient();
       const { data, error } = await supabase
         .schema('catalog')
         .from('cards')
@@ -49,6 +51,7 @@ export default function CardDetail() {
     if (!confirm('Are you sure you want to delete this listing?')) return;
 
     try {
+      const supabase = getSupabaseClient();
       const { error } = await supabase
         .schema('catalog')
         .from('cards')
