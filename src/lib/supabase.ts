@@ -87,7 +87,6 @@ export function errorForConsole(error: unknown): unknown {
 
 // Database types
 export interface CatalogCard {
-  id: string;
   name: string
   number: string;
   color_type: string;
