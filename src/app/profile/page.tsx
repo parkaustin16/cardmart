@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase, Card } from '@/lib/supabase';
+import { supabase, Card, formatSupabaseError, errorForConsole } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
 import CardItem from '@/components/CardItem';
@@ -10,6 +10,7 @@ export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function Profile() {
   const fetchUserCards = async (userId: string) => {
     try {
       setLoading(true);
+      setError(null);
       const { data, error } = await supabase
         .schema('catalog')
         .from('cards')
@@ -35,8 +37,9 @@ export default function Profile() {
 
       if (error) throw error;
       setCards(data || []);
-    } catch (error) {
-      console.error('Error fetching user cards:', error);
+    } catch (err) {
+      setError(formatSupabaseError(err));
+      console.error('Error fetching user cards:', errorForConsole(err));
     } finally {
       setLoading(false);
     }
@@ -55,6 +58,12 @@ export default function Profile() {
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400">{user.email}</p>
         </div>
+
+        {error && (
+          <div className="mb-6 p-3 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg">
+            {error}
+          </div>
+        )}
 
         <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
           My Listings

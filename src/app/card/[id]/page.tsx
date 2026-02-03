@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getSupabaseClient, Card } from '@/lib/supabase';
+import { getSupabaseClient, Card, errorForConsole } from '@/lib/supabase';
 import { useParams, useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
@@ -39,7 +39,7 @@ export default function CardDetail() {
       if (error) throw error;
       setCard(data);
     } catch (error) {
-      console.error('Error fetching card:', error);
+      console.error('Error fetching card:', errorForConsole(error));
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ export default function CardDetail() {
       if (error) throw error;
       router.push('/marketplace');
     } catch (error) {
-      console.error('Error deleting card:', error);
+      console.error('Error deleting card:', errorForConsole(error));
       alert('Failed to delete card');
     }
   };

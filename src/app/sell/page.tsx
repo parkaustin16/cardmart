@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, formatSupabaseError, errorForConsole } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
 
@@ -62,7 +62,8 @@ export default function SellCard() {
 
       router.push('/marketplace');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to list card');
+      setError(formatSupabaseError(err));
+      console.error('Error listing card:', errorForConsole(err));
     } finally {
       setLoading(false);
     }

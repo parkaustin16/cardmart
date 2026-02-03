@@ -32,6 +32,59 @@ export const supabase: SupabaseClient = new Proxy({} as SupabaseClient, {
   },
 }) as SupabaseClient;
 
+export function formatSupabaseError(error: unknown): string {
+  if (!error) return 'Unknown error';
+
+  if (error instanceof Error) {
+    return error.message || 'Unknown error';
+  }
+
+  if (typeof error === 'string') return error;
+
+  if (typeof error === 'object') {
+    const record = error as Record<string, unknown>;
+
+    const message =
+      typeof record.message === 'string' && record.message
+        ? record.message
+        : 'Unknown error';
+
+    const code = typeof record.code === 'string' ? record.code : undefined;
+    const details =
+      typeof record.details === 'string' ? record.details : undefined;
+    const hint = typeof record.hint === 'string' ? record.hint : undefined;
+
+    const suffixParts = [code && `code=${code}`, details, hint].filter(
+      (part): part is string => Boolean(part)
+    );
+
+    return suffixParts.length ? `${message} (${suffixParts.join(' • ')})` : message;
+  }
+
+  return 'Unknown error';
+}
+
+export function errorForConsole(error: unknown): unknown {
+  if (!error) return error;
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+    };
+  }
+  if (typeof error === 'object') {
+    try {
+      return JSON.parse(
+        JSON.stringify(error, Object.getOwnPropertyNames(error as object))
+      );
+    } catch {
+      return error;
+    }
+  }
+  return error;
+}
+
 // Database types
 export interface Card {
   id: string;

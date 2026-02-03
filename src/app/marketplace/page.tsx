@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase, Card } from '@/lib/supabase';
+import { supabase, Card, formatSupabaseError, errorForConsole } from '@/lib/supabase';
 import CardItem from '@/components/CardItem';
 
 export default function Marketplace() {
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [gameFilter, setGameFilter] = useState('');
   const [rarityFilter, setRarityFilter] = useState('');
@@ -14,6 +15,7 @@ export default function Marketplace() {
   const fetchCards = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       let query = supabase
         .schema('catalog')
         .from('cards')
@@ -32,8 +34,9 @@ export default function Marketplace() {
 
       if (error) throw error;
       setCards(data || []);
-    } catch (error) {
-      console.error('Error fetching cards:', error);
+    } catch (err) {
+      setError(formatSupabaseError(err));
+      console.error('Error fetching cards:', errorForConsole(err));
     } finally {
       setLoading(false);
     }
@@ -53,6 +56,12 @@ export default function Marketplace() {
         <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-8">
           Marketplace
         </h1>
+
+        {error && (
+          <div className="mb-6 p-3 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg">
+            {error}
+          </div>
+        )}
 
         {/* Filters */}
         <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
