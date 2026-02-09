@@ -64,6 +64,10 @@ export const translations = {
       empty: 'No games have been added yet.',
       viewSets: 'View sets and cards',
     },
+    languageNames: {
+      en: 'English',
+      kr: 'Korean',
+    } as Record<string, string>,
     games: {} as Record<string, string>,
   },
   kr: {
@@ -117,6 +121,10 @@ export const translations = {
       empty: '아직 등록된 게임이 없습니다.',
       viewSets: '세트와 카드 보기',
     },
+    languageNames: {
+      en: '영어',
+      kr: '한국어',
+    } as Record<string, string>,
     games: {
       'one-piece': '원피스',
       pokemon: '포켓몬',

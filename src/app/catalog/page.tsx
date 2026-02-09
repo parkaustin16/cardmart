@@ -7,7 +7,7 @@ import type { Game } from '@/lib/supabase';
 import { useLanguage } from '@/lib/i18n-client';
 
 export default function CatalogPage() {
-	const { t, withLang } = useLanguage();
+	const { t, withLang, lang } = useLanguage();
 	const [games, setGames] = useState<Game[]>([]);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -88,7 +88,15 @@ export default function CatalogPage() {
 									.trim()
 									.toLowerCase()
 									.replace(/\s+/g, '-');
-								const gameName = t.games?.[gameKey] ?? game.name;
+								const languageCodeMatch = gameSlug.toLowerCase().match(/-([a-z]{2})$/);
+								const languageCode = languageCodeMatch?.[1];
+								const languageLabel = languageCode
+									? t.languageNames?.[languageCode] ?? languageCode.toUpperCase()
+									: null;
+								const baseGameName = t.games?.[gameKey] ?? game.name;
+								const displayName = languageLabel
+									? `${baseGameName} (${languageLabel})`
+									: baseGameName;
 
 								return (
 									<Link
@@ -97,7 +105,7 @@ export default function CatalogPage() {
 										className="group rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-sm hover:shadow-md transition-shadow"
 									>
 										<h2 className="text-xl font-semibold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
-											{gameName}
+											{displayName}
 										</h2>
 										<p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
 											{t.catalog.viewSets}
