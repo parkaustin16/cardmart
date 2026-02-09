@@ -64,7 +64,7 @@ export const translations = {
       empty: 'No games have been added yet.',
       viewSets: 'View sets and cards',
     },
-    games: {},
+    games: {} as Record<string, string>,
   },
   kr: {
     nav: {
@@ -120,7 +120,7 @@ export const translations = {
     games: {
       'one-piece': '원피스',
       pokemon: '포켓몬',
-    },
+    } as Record<string, string>,
   },
 } as const;
 
