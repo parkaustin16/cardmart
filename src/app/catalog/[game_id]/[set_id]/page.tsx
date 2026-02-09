@@ -161,7 +161,7 @@ const fetchSet = async (
 const fetchCards = async (setId: string): Promise<Card[]> => {
 	const { data, error } = await supabase
 		.from('cards')
-		.select('id, set_id, name, number, set_code')
+		.select('id, set_id, name, number, set_code, game, rarity, condition, price, image_url')
 		.eq('set_id', setId)
 		.order('number');
 
