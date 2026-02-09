@@ -105,7 +105,8 @@ const fetchSet = async (
 			.from('set_localizations')
 			.select('set_id, name, local_set_slug, master_set_slug, language')
 			.eq('language', language)
-			.ilike('local_set_slug', `${normalizedSlug}%`)
+			.ilike('local_set_slug', normalizedSlug)
+			.limit(1)
 			.maybeSingle();
 
 		if (localizationError) {
@@ -121,7 +122,8 @@ const fetchSet = async (
 				.from('sets')
 				.select('set_id, game_id, name, code, slug')
 				.eq('game_id', gameId)
-				.ilike('slug', `${localizationData.master_set_slug}%`)
+				.ilike('slug', localizationData.master_set_slug)
+				.limit(1)
 				.maybeSingle();
 
 			if (error || !data) {
@@ -144,8 +146,9 @@ const fetchSet = async (
 		.from('sets')
 		.select('set_id, game_id, name, code, slug')
 		.eq('game_id', gameId)
-		.ilike('slug', `${normalizedSlug}%`)
-		.single();
+		.ilike('slug', normalizedSlug)
+		.limit(1)
+		.maybeSingle();
 
 	if (error || !data) {
 		return {
