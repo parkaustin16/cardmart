@@ -62,3 +62,20 @@ export interface Card {
   image_url?: string | null;
   localizations?: CardLocalization[]; // Joined data
 }
+
+/**
+ * catalog.products table
+ * Sealed product listings tied to sets
+ */
+export interface Product {
+  id?: string;
+  product_id?: string;
+  set_id?: string;
+  name?: string;
+  product_name?: string;
+  product_type?: string;
+  category?: string;
+  image_url?: string | null;
+  price?: number | null;
+  [key: string]: unknown;
+}

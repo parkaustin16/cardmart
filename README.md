@@ -1,4 +1,4 @@
-# CardLink - Trading Card Marketplace
+# CardJang - Trading Card Marketplace
 
 A modern web marketplace for trading cards built with Next.js, Node.js, and Supabase.
 

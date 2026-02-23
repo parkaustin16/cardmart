@@ -12,8 +12,6 @@ export default function CatalogPage() {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
 
-	const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
 	useEffect(() => {
 		let isMounted = true;
 
@@ -90,18 +88,7 @@ export default function CatalogPage() {
 									.trim()
 									.toLowerCase()
 									.replace(/\s+/g, '-');
-								const languageCodeMatch = gameSlug.toLowerCase().match(/-([a-z]{2})$/);
-								const languageCode = languageCodeMatch?.[1];
-								const languageLabel = languageCode
-									? t.languageNames?.[languageCode] ?? languageCode.toUpperCase()
-									: null;
-								const baseGameName = t.games?.[gameKey] ?? game.name;
-								const languageSuffixPattern = languageLabel
-									? new RegExp(`\\(${escapeRegExp(languageLabel)}\\)$`)
-									: null;
-								const displayName = languageLabel && !languageSuffixPattern?.test(baseGameName)
-									? `${baseGameName} (${languageLabel})`
-									: baseGameName;
+								const displayName = t.games?.[gameKey] ?? game.name;
 
 								return (
 									<Link

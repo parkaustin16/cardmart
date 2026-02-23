@@ -178,15 +178,7 @@ export default async function GameDetailPage({
 		.replace(/\s+/g, '-');
 	const localizedGameName =
 		translations[language].games?.[gameKey] ?? game?.name;
-	const languageCodeMatch = (game?.slug ?? '').toLowerCase().match(/-([a-z]{2})$/);
-	const languageCode = languageCodeMatch?.[1];
-	const languageLabel = languageCode
-		? translations[language].languageNames?.[languageCode] ?? languageCode.toUpperCase()
-		: null;
-	const baseGameName = localizedGameName ?? game?.name ?? 'Game';
-	const displayGameName = languageLabel
-		? `${baseGameName} (${languageLabel})`
-		: baseGameName;
+	const displayGameName = localizedGameName ?? game?.name ?? 'Game';
 
 	return (
 		<div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
@@ -203,7 +195,7 @@ export default async function GameDetailPage({
 							{displayGameName} Sets
 						</h1>
 						<p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
-							Select a set to browse the cards.
+							{translations[language].catalog.setsSubtitle}
 						</p>
 					</div>
 
